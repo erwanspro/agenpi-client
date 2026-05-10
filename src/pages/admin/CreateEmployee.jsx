@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
-import api from '../api/axios';
+import api from '../../api/axios';
 import { useNavigate } from 'react-router-dom';
-import Navbar from '../components/Navbar'
 import { toast } from 'react-toastify';
 
 
@@ -60,9 +59,6 @@ const CreateEmployee = () => {
 return (
         // 1. Le parent devient "flex-col" (colonne) au lieu de flex tout court
         <div className="min-h-screen flex flex-col bg-(--bg) transition-colors duration-200">
-            
-            {/* 2. La Navbar prend naturellement sa place tout en haut */}
-            <Navbar />
 
             {/* 3. On ajoute ce nouveau conteneur "flex-1" (qui prend tout l'espace restant) 
                    C'est LUI qui va centrer la carte au milieu de l'écran */}

@@ -1,8 +1,7 @@
 import { jwtDecode } from "jwt-decode";
-import AdminDash from "../components/dashboards/AdminDash";
-import RHDash from "../components/dashboards/RHDash";
-import DevDash from "../components/dashboards/DevDash";
-import Navbar from "../components/Navbar";
+import AdminDash from "./admin/AdminDash";
+import RHDash from "./rh/RHDash";
+import DevDash from "./dev/DevDash";
 
 const Home = () => {
     const token = localStorage.getItem('token');
@@ -18,8 +17,7 @@ const Home = () => {
     }
 
     return (
-        <div className="min-h-screen flex flex-col bg-(--bg)">
-            <Navbar />
+
             <main className="p-8">
                 {/* On affiche le bon contenu selon le rôle */}
                 {roles.includes('ROLE_ADMIN') ? (
@@ -30,7 +28,6 @@ const Home = () => {
                     <DevDash />
                 )}
             </main>
-        </div>
     );
 };
 
