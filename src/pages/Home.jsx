@@ -14,12 +14,11 @@ const Home = () => {
             roles = decoded.roles || [];
         // eslint-disable-next-line no-unused-vars
         } catch (e) {
-            console.error("Erreur token");
         }
     }
 
     return (
-        <div className="min-h-screen flex flex-col bg-[var(--bg)]">
+        <div className="min-h-screen flex flex-col bg-(--bg)">
             <Navbar />
             <main className="p-8">
                 {/* On affiche le bon contenu selon le rôle */}

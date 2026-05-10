@@ -5,23 +5,23 @@ const Navbar = () => {
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
     
-    // Initialisation des variables utilisateur
+    // init des variables utilisateur
     let isAuthenticated = false;
     let roles = [];
 
-    // On décode le token s'il existe pour connaître les permissions
+    // décode le token s'il existe pour connaître les perm
     if (token) {
         try {
             const decoded = jwtDecode(token);
             isAuthenticated = true;
             roles = decoded.roles || [];
         } catch (error) {
-            console.error("Token invalide", error);
-            localStorage.removeItem('token'); // Nettoyage si le token est corrompu
+            // Nettoyage si le token est corrompu
+            localStorage.removeItem('token');
         }
     }
 
-    // Fonction pour se déconnecter
+    // déconnecter
     const handleLogout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('userEmail');
@@ -31,8 +31,8 @@ const Navbar = () => {
     const navLinkStyle = ({ isActive }) => 
         `px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
             isActive 
-                ? "bg-[var(--accent)] text-white shadow-md shadow-[var(--accent-bg)]"
-                : "text-[var(--text)] hover:text-[var(--text-h)] hover:bg-[var(--code-bg)]"
+                ? "bg-(--accent) text-white shadow-md shadow-(--accent-bg)"
+                : "text-(--text) hover:text-(--text-h) hover:bg-(--code-bg)"
         }`;
 
     return (

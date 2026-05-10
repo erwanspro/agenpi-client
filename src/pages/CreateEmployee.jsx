@@ -28,7 +28,6 @@ const CreateEmployee = () => {
                 const response = await api.get('/services'); 
                 setServicesList(response.data.member || []);
             } catch (err) {
-                console.error("Erreur services:", err);
                 toast.error("Erreur serveur : Impossible de récupérer la liste des services. Contactez le support technique.");
             }
 };
@@ -51,7 +50,6 @@ const CreateEmployee = () => {
             navigate('/'); 
             
         } catch (err) {
-            console.error("Erreur création:", err);
             if (err.response && (err.response.status === 401 || err.response.status === 403)) {
                 toast.error("Accès refusé : Droits d'administration requis.");
             } else {
@@ -98,15 +96,15 @@ return (
                             
                             {/* Section Identité */}
                             <div>
-                                <h3 className="text-sm font-semibold text-[var(--text-h)] mb-4 border-b border-[var(--border)] pb-2">Identité</h3>
+                                <h3 className="text-sm font-semibold text-(--text-h) mb-4 border-b border-(--border) pb-2">Identité</h3>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                                     <div className="space-y-1.5">
-                                        <label className="text-xs font-semibold text-[var(--text)] uppercase tracking-wide">Prénom</label>
-                                        <input type="text" name="firstName" required onChange={handleChange} className="w-full px-4 py-2.5 bg-[var(--code-bg)] border border-[var(--border)] rounded-lg text-[var(--text-h)] focus:outline-none focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent)] transition-colors" />
+                                        <label className="text-xs font-semibold text-(--text) uppercase tracking-wide">Prénom</label>
+                                        <input type="text" name="firstName" required onChange={handleChange} className="w-full px-4 py-2.5 bg-(--code-bg) border border-(--border) rounded-lg text-(--text-h) focus:outline-none focus:border-(--accent) focus:ring-1 focus:ring-(--accent) transition-colors" />
                                     </div>
                                     <div className="space-y-1.5">
-                                        <label className="text-xs font-semibold text-[var(--text)] uppercase tracking-wide">Nom</label>
-                                        <input type="text" name="lastName" required onChange={handleChange} className="w-full px-4 py-2.5 bg-[var(--code-bg)] border border-[var(--border)] rounded-lg text-[var(--text-h)] focus:outline-none focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent)] transition-colors" />
+                                        <label className="text-xs font-semibold text-(--text) uppercase tracking-wide">Nom</label>
+                                        <input type="text" name="lastName" required onChange={handleChange} className="w-full px-4 py-2.5 bg-(--code-bg) border border-(--border) rounded-lg text-(--text-h) focus:outline-none focus:border-(--accent) focus:ring-1 focus:ring-(--accent) transition-colors" />
                                     </div>
                                 </div>
                             </div>
@@ -117,15 +115,15 @@ return (
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                                     <div className="space-y-1.5">
                                         <label className="text-xs font-semibold text-(--text) uppercase tracking-wide">Email professionnel</label>
-                                        <input type="email" name="email" required onChange={handleChange} className="w-full px-4 py-2.5 bg-[var(--code-bg)] border border-[var(--border)] rounded-lg text-[var(--text-h)] focus:outline-none focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent)] transition-colors" />
+                                        <input type="email" name="email" required onChange={handleChange} className="w-full px-4 py-2.5 bg-(--code-bg) border border-(--border) rounded-lg text-(--text-h) focus:outline-none focus:border-(--accent) focus:ring-1 focus:ring-(--accent) transition-colors" />
                                     </div>
                                     <div className="space-y-1.5">
                                         <label className="text-xs font-semibold text-(--text) uppercase tracking-wide">Téléphone (Optionnel)</label>
-                                        <input type="tel" name="phone" onChange={handleChange} className="w-full px-4 py-2.5 bg-(--code-bg) border border-[var(--border)] rounded-lg text-[var(--text-h)] focus:outline-none focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent)] transition-colors" />
+                                        <input type="tel" name="phone" onChange={handleChange} className="w-full px-4 py-2.5 bg-(--code-bg) border border-(--border) rounded-lg text-(--text-h) focus:outline-none focus:border-(--accent) focus:ring-1 focus:ring-(--accent) transition-colors" />
                                     </div>
                                     <div className="space-y-1.5 sm:col-span-2">
                                         <label className="text-xs font-semibold text-(--text) uppercase tracking-wide">Mot de passe provisoire</label>
-                                        <input type="password" name="password" required onChange={handleChange} className="w-full px-4 py-2.5 bg-[var(--code-bg)] border border-[var(--border)] rounded-lg text-[var(--text-h)] focus:outline-none focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent)] transition-colors" />
+                                        <input type="password" name="password" required onChange={handleChange} className="w-full px-4 py-2.5 bg-(--code-bg) border border-(--border) rounded-lg text-(--text-h) focus:outline-none focus:border-(--accent) focus:ring-1 focus:ring-(--accent) transition-colors" />
                                         <p className="text-[11px] text-(--text) mt-1">L'employé devra modifier ce mot de passe lors de sa première connexion.</p>
                                     </div>
                                 </div>
@@ -136,7 +134,7 @@ return (
                                 <h3 className="text-sm font-semibold text-(--text-h) mb-4 border-b border-(--border) pb-2">Assignation</h3>
                                 <div className="space-y-1.5">
                                     <label className="text-xs font-semibold text-(--text) uppercase tracking-wide">Service / Département</label>
-                                    <select name="service" required onChange={handleChange} defaultValue="" className="w-full px-4 py-2.5 bg-[var(--code-bg)] border border-[var(--border)] rounded-lg text-[var(--text-h)] focus:outline-none focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent)] transition-colors cursor-pointer appearance-none" style={{ backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23949ba4' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`, backgroundPosition: `right 0.5rem center`, backgroundRepeat: `no-repeat`, backgroundSize: `1.5em 1.5em`, paddingRight: `2.5rem` }}>
+                                    <select name="service" required onChange={handleChange} defaultValue="" className="w-full px-4 py-2.5 bg-(--code-bg) border border-(--border) rounded-lg text-(--text-h) focus:outline-none focus:border-(--accent) focus:ring-1 focus:ring-(--accent) transition-colors cursor-pointer appearance-none" style={{ backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23949ba4' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`, backgroundPosition: `right 0.5rem center`, backgroundRepeat: `no-repeat`, backgroundSize: `1.5em 1.5em`, paddingRight: `2.5rem` }}>
                                         <option value="" disabled className="text-(--text)">-- Sélectionner un service --</option>
                                         {servicesList.map((service) => (
                                             <option key={service['@id']} value={service['@id']}>
@@ -152,13 +150,13 @@ return (
                                 <button 
                                     type="button" 
                                     onClick={() => navigate('/')} 
-                                    className="w-full sm:w-auto px-6 py-2.5 text-sm font-medium text-[var(--text)] hover:text-[var(--text-h)] bg-transparent hover:bg-[var(--code-bg)] border border-transparent hover:border-[var(--border)] rounded-xl transition-all"
+                                    className="w-full sm:w-auto px-6 py-2.5 text-sm font-medium text-(--text) hover:text-(--text-h) bg-transparent hover:bg-(--code-bg) border border-transparent hover:border-(--border) rounded-xl transition-all"
                                 >
                                     Annuler
                                 </button>
                                 <button 
                                     type="submit" 
-                                    className="w-full sm:w-auto px-6 py-2.5 text-sm font-medium text-white bg-[var(--accent)] hover:opacity-90 rounded-xl transition-all shadow-md shadow-[var(--accent-bg)] focus:ring-4 focus:ring-[var(--accent-border)]"
+                                    className="w-full sm:w-auto px-6 py-2.5 text-sm font-medium text-white bg-(--accent) hover:opacity-90 rounded-xl transition-all shadow-md shadow-(--accent-bg) focus:ring-4 focus:ring-(--accent-border)"
                                 >
                                     Créer l'employé
                                 </button>

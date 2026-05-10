@@ -4,6 +4,7 @@ import Login from './pages/Login';
 import Home from './pages/Home';
 import AdminRoute from './components/AdminRoute';
 import NotFound from './components/NotFound';
+import GuestRoute from './components/GuestRoute';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -15,7 +16,14 @@ function App() {
       <ToastContainer position="top-right" autoClose={3000} theme="colored" />
 
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route 
+          path="/" element={
+            <GuestRoute>
+              <Login />
+            </GuestRoute>
+          } 
+        />       
+        
         <Route path="/home" element={<Home />} />
 
         {/* Route RH*/}

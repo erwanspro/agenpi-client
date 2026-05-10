@@ -15,7 +15,6 @@ const AdminRoute = ({ children }) => {
         decodedToken = jwtDecode(token);
     // eslint-disable-next-line no-unused-vars
     } catch (error) {
-        console.error("Token invalide");
     }
 
     // si le décodage a échoué

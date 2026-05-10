@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // plus besoin de répéter le lien api partout
 const api = axios.create({
-    baseURL: 'https://localhost:8000/api',
+    baseURL: import.meta.env.VITE_API_BASE_URL,
 });
 
 // intercepteur de requete

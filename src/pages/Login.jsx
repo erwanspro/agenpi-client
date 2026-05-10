@@ -28,8 +28,6 @@ const Login = () => {
                 password: formData.password
             });
 
-            console.log("RÉPONSE BRUTE :", response.data);
-
             // Extraction directe du token depuis response.data
             const jwt = response.data.token;
 
@@ -45,7 +43,6 @@ const Login = () => {
             }
 
         } catch (err) {
-            console.error("Erreur connexion:", err);
             toast.error("Email ou mot de passe incorrect.");
         }
     };
@@ -69,7 +66,7 @@ const Login = () => {
                         <span className="shrink-0 px-4 text-xs font-medium text-(--text) uppercase tracking-wider">
                             Connexion
                         </span>
-                        <div className="grow border-t border-[var(--border)]"></div>
+                        <div className="grow border-t border-(--border)"></div>
                     </div>
 
                     {/* Formulaire */}
@@ -86,12 +83,12 @@ const Login = () => {
                                 placeholder="nom@entreprise.com"
                                 required 
                                 onChange={handleChange} 
-                                className="w-full px-4 py-2.5 bg-[var(--code-bg)] border border-[var(--border)] rounded-lg text-[var(--text-h)] placeholder-[var(--text)] focus:outline-none focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent)] transition-colors"
+                                className="w-full px-4 py-2.5 bg-(--code-bg) border border-(--border) rounded-lg text-(--text-h) placeholder-(--text) focus:outline-none focus:border-(--accent) focus:ring-1 focus:ring-(--accent) transition-colors"
                             />
                         </div>
                         
                         <div className="space-y-1.5">
-                            <label className="text-xs font-semibold text-[var(--text)] uppercase tracking-wide">
+                            <label className="text-xs font-semibold text-(--text) uppercase tracking-wide">
                                 Mot de passe :
                             </label>
                             <input 
@@ -100,21 +97,21 @@ const Login = () => {
                                 placeholder="••••••••"
                                 required 
                                 onChange={handleChange} 
-                                className="w-full px-4 py-2.5 bg-[var(--code-bg)] border border-[var(--border)] rounded-lg text-[var(--text-h)] placeholder-[var(--text)] focus:outline-none focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent)] transition-colors"
+                                className="w-full px-4 py-2.5 bg-(--code-bg) border border-(--border) rounded-lg text-(--text-h) placeholder-(--text) focus:outline-none focus:border-(--accent) focus:ring-1 focus:ring-(--accent) transition-colors"
                             />
                         </div>
 
                         {/* Cases à cocher */}
                         <div className="space-y-3 pt-2">
                             <label className="flex items-start gap-3 cursor-pointer group">
-                                <input type="checkbox" className="mt-1 w-4 h-4 rounded border-[var(--border)] bg-[var(--code-bg)] text-[var(--accent)] focus:ring-[var(--accent)] focus:ring-offset-[var(--bg)]" />
-                                <span className="text-sm text-[var(--text)] group-hover:text-[var(--text-h)] transition-colors">
-                                    En vous inscrivant, vous créez un compte et acceptez les <a href="#" className="text-[var(--accent)] hover:underline">Conditions d'utilisation</a> et la <a href="#" className="text-[var(--accent)] hover:underline">Politique de confidentialité</a>.
+                                <input type="checkbox" className="mt-1 w-4 h-4 rounded border-(--border) bg-(--code-bg) text-(--accent) focus:ring-(--accent) focus:ring-offset-(--bg)" />
+                                <span className="text-sm text-(--text) group-hover:text-(--text-h) transition-colors">
+                                    En vous inscrivant, vous créez un compte et acceptez les <a href="#" className="text-(--accent) hover:underline">Conditions d'utilisation</a> et la <a href="#" className="text-(--accent) hover:underline">Politique de confidentialité</a>.
                                 </span>
                             </label>
                             <label className="flex items-center gap-3 cursor-pointer group">
-                                <input type="checkbox" className="w-4 h-4 rounded border-[var(--border)] bg-[var(--code-bg)] text-[var(--accent)] focus:ring-[var(--accent)] focus:ring-offset-[var(--bg)]" />
-                                <span className="text-sm text-[var(--text)] group-hover:text-[var(--text-h)] transition-colors">
+                                <input type="checkbox" className="w-4 h-4 rounded border-(--border) bg-(--code-bg) text-(--accent) focus:ring-(--accent) focus:ring-offset-(--bg)" />
+                                <span className="text-sm text-(--text) group-hover:text-(--text-h) transition-colors">
                                     M'envoyer des mises à jour.
                                 </span>
                             </label>
@@ -122,7 +119,7 @@ const Login = () => {
 
                         <button 
                             type="submit"
-                            className="w-full mt-4 bg-[var(--accent)] hover:opacity-90 text-white font-medium py-3 px-4 rounded-lg transition-all focus:ring-4 focus:ring-[var(--accent-border)]"
+                            className="w-full mt-4 bg-(--accent) hover:opacity-90 text-white font-medium py-3 px-4 rounded-lg transition-all focus:ring-4 focus:ring-(--accent-border)"
                         >
                             Se connecter
                         </button>
@@ -168,10 +165,10 @@ const Login = () => {
                         {/* Section Avatars */}
                         <div className="flex items-center gap-5 mb-16">
                             <div className="flex -space-x-4">
-                                <img className="w-12 h-12 rounded-full border-[3px] border-[var(--accent)] shadow-sm" src="https://i.pravatar.cc/100?img=33" alt="Dev" />
-                                <img className="w-12 h-12 rounded-full border-[3px] border-[var(--accent)] shadow-sm" src="https://i.pravatar.cc/100?img=47" alt="RH" />
-                                <img className="w-12 h-12 rounded-full border-[3px] border-[var(--accent)] shadow-sm" src="https://i.pravatar.cc/100?img=12" alt="Lead" />
-                                <div className="w-12 h-12 rounded-full border-[3px] border-[var(--accent)] bg-white flex items-center justify-center text-[var(--accent)] font-bold text-xs shadow-sm">
+                                <img className="w-12 h-12 rounded-full border-[3px] border-(--accent) shadow-sm" src="https://i.pravatar.cc/100?img=33" alt="Dev" />
+                                <img className="w-12 h-12 rounded-full border-[3px] border-(--accent) shadow-sm" src="https://i.pravatar.cc/100?img=47" alt="RH" />
+                                <img className="w-12 h-12 rounded-full border-[3px] border-(--accent) shadow-sm" src="https://i.pravatar.cc/100?img=12" alt="Lead" />
+                                <div className="w-12 h-12 rounded-full border-[3px] border-(--accent) bg-white flex items-center justify-center text-(--accent) font-bold text-xs shadow-sm">
                                     +2k
                                 </div>
                             </div>
@@ -188,7 +185,7 @@ const Login = () => {
 
                     {/* SECTION BASSE : L'illustration qui "déborde" (Style App Showcase) */}
                     <div className="flex-1 relative w-full h-full mt-auto">
-                        <div className="absolute top-0 left-0 w-[120%] h-[150%] bg-white/10 backdrop-blur-md border border-white/20 rounded-tl-2xl rounded-tr-xl shadow-2xl p-6 overflow-hidden transform rotate-[-2deg] origin-bottom-right transition-transform hover:rotate-0 duration-700">
+                        <div className="absolute top-0 left-0 w-[120%] h-[150%] bg-white/10 backdrop-blur-md border border-white/20 rounded-tl-2xl rounded-tr-xl shadow-2xl p-6 overflow-hidden transform -rotate-2 origin-bottom-right transition-transform hover:rotate-0 duration-700">
                             
                             {/* En-tête fausse app */}
                             <div className="flex items-center gap-2 mb-6 border-b border-white/10 pb-4">
