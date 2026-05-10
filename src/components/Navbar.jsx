@@ -25,7 +25,7 @@ const Navbar = () => {
     const handleLogout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('userEmail');
-        navigate('/login');
+        navigate('/');
     };
 
     const navLinkStyle = ({ isActive }) => 
@@ -36,11 +36,11 @@ const Navbar = () => {
         }`;
 
     return (
-        <nav className="w-full flex items-center justify-between px-6 py-4 bg-[var(--bg-secondary)] border-b border-[var(--border)] sticky top-0 z-50">
+        <nav className="w-full flex items-center justify-between px-6 py-4 bg-(--bg-secondary) border-b border-(--border) sticky top-0 z-50">
             
             <div className="flex items-center gap-3">
-                <div className="mr-6 font-extrabold text-[var(--text-h)] tracking-tight flex items-center gap-2">
-                    <span className="text-[var(--accent)] text-lg">/</span>
+                <div className="mr-6 font-extrabold text-(--text-h) tracking-tight flex items-center gap-2">
+                    <span className="text-(--accent) text-lg">/</span>
                     AGENPI
                 </div>
 

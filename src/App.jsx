@@ -3,10 +3,17 @@ import CreateEmployee from './pages/CreateEmployee';
 import Login from './pages/Login';
 import Home from './pages/Home';
 import AdminRoute from './components/AdminRoute';
+import NotFound from './components/NotFound';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 function App() {
   return (
     <>
+      {/* conteneur invisible qui gérera les apparitions notif */}
+      <ToastContainer position="top-right" autoClose={3000} theme="colored" />
+
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/home" element={<Home />} />
@@ -26,7 +33,10 @@ function App() {
           </AdminRoute>
           } 
         />
-        
+
+        {/* ROUTE 404 DOIT TOUJOURS ÊTRE DERNIER */}
+        <Route path="*" element={<NotFound />} /> 
+
       </Routes>
     </>
   );
