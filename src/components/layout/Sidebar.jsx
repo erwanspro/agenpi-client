@@ -52,21 +52,28 @@ const Sidebar = () => {
                 {(isAuthenticated && (roles.includes('ROLE_ADMIN') || roles.includes('ROLE_RH'))) && (
                     <div className="mb-4 pt-4 border-t border-(--border)">
                         <p className="px-4 text-xs font-semibold text-(--text) uppercase tracking-wider mb-2 opacity-70">Administration</p>
-                        
+                        {/* QUE POUR L'ADMIN */}
                         {roles.includes('ROLE_ADMIN') && (
                             <NavLink to="/create_employee" className={navLinkStyle}>
                                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" /></svg>
-                                Créer employé
+                                Création Employé
                             </NavLink>
                         )}
-                        
+                        {roles.includes('ROLE_ADMIN') && (
+                            <NavLink to="/clients_manage" className={navLinkStyle}>
+                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" /></svg>
+                                Gestion Clients
+                            </NavLink>
+                        )}
+
+                        {/* POUR ADMIN + RH */}
                         <NavLink to="/users_manage" className={navLinkStyle}>
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
-                            Employés
+                            Liste Employés
                         </NavLink>
                         <NavLink to="/absence_manage" className={navLinkStyle}>
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-                            Absences (Admin)
+                            Gestion Absences
                         </NavLink>
                     </div>
                 )}

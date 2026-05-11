@@ -28,8 +28,7 @@ const Topbar = () => {
     };
 
     return (
-        <header className="h-16 px-6 bg-(--bg-secondary) border-b border-(--border) flex items-center justify-between transition-colors duration-200 z-10 sticky top-0">
-            
+        <header className="h-16 shrink-0 px-6 bg-(--bg-secondary) border-b border-(--border) flex items-center justify-between transition-colors duration-200 z-50 sticky top-0">            
             {/* Zone gauche (ex: un champ de recherche plus tard) */}
             <div>
                 <span className="text-(--text) text-sm font-medium">Bienvenue sur votre espace.</span>

@@ -8,6 +8,7 @@ import GuestRoute from './components/routes/GuestRoute';
 import DashboardLayout from './components/layout/DashboardLayout';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ClientsManage from './pages/admin/ClientsManage';
 
 function App() {
   return (
@@ -34,12 +35,20 @@ function App() {
             <Route path="/my_absence" element={<Home />} />
             <Route path="/task" element={<Home />} />
 
+            {/*ROUTES ADMIN SECURISER */}
+
+            <Route path="/clients_manage" element={
+              <AdminRoute>
+                <ClientsManage />
+              </AdminRoute>
+            } />
+
             <Route path="/create_employee" element={
               <AdminRoute>
                 <CreateEmployee />
               </AdminRoute>
             } />
-            
+
         </Route>
 
         {/* ROUTE 404 */}
