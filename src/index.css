@@ -1,65 +1,76 @@
 @import "tailwindcss";
 
 :root {
-  /* Palette - Mode Clair */
-  --text: #4e5058;
-  --text-h: #060607;
-  --bg: #ffffff;
-  --bg-secondary: #f2f3f5;
-  --border: #e3e5e8;
-  --code-bg: #f2f3f5;
-  
-  /* Nouveau Violet Moyen (ni trop bleu, ni trop foncé) */
-  --accent: #8b5cf6; 
+  --text: #475569;
+  --text-h: #0f172a;
+  --bg: #f8fafc;
+  --bg-secondary: #ffffff;
+  --border: #e2e8f0;
+  --code-bg: #f1f5f9;
+  --accent: #8b5cf6;
   --accent-bg: rgba(139, 92, 246, 0.1);
   --accent-border: rgba(139, 92, 246, 0.5);
-  
   --social-bg: rgba(242, 243, 245, 0.8);
-  --shadow: rgba(0, 0, 0, 0.08) 0 4px 8px -2px, rgba(0, 0, 0, 0.04) 0 2px 4px -2px;
+  --shadow: rgba(15, 23, 42, 0.04) 0 4px 6px -1px, rgba(15, 23, 42, 0.02) 0 2px 4px -1px;
 
-  /* Typographie style Application */
+  /* variables pour les halos de fond */
+  --blob-accent: rgba(139, 92, 246, 0.08);
+  --blob-blue: rgba(59, 130, 246, 0.06);
+  --blob-top: rgba(139, 92, 246, 0.03);
+
   --sans: "gg sans", "Noto Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --heading: "gg sans", "Noto Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --mono: Consolas, "Andale Mono", "Lucida Console", monospace;
 
   font: 16px/1.5 var(--sans);
   letter-spacing: normal;
-  color-scheme: light dark;
   color: var(--text);
-  background: var(--bg);
+  background-color: var(--bg);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    /* Palette - Mode Sombre */
-    --text: #dbdee1;
-    --text-h: #f2f3f5;
-    --bg: #313338;       
-    --bg-secondary: #2b2d31; 
-    --border: #3f4147;   
-    --code-bg: #1e1f22;  
-    
-    /* Le même Violet appliqué au mode sombre */
-    --accent: #8b5cf6;   
-    --accent-bg: rgba(139, 92, 246, 0.15);
-    --accent-border: rgba(139, 92, 246, 0.5);
-    
-    --social-bg: rgba(43, 45, 49, 0.8);
-    --shadow: rgba(0, 0, 0, 0.2) 0 8px 15px, rgba(0, 0, 0, 0.1) 0 4px 6px -2px;
-  }
+:root.dark {
+  --text: #dbdee1;
+  --text-h: #f2f3f5;
+  --bg: #313338;
+  --bg-secondary: #2b2d31;
+  --border: #3f4147;
+  --code-bg: #1e1f22;
+  --accent: #8b5cf6;
+  --accent-bg: rgba(139, 92, 246, 0.15);
+  --accent-border: rgba(139, 92, 246, 0.5);
+  --social-bg: rgba(43, 45, 49, 0.8);
+  --shadow: rgba(0, 0, 0, 0.2) 0 8px 15px, rgba(0, 0, 0, 0.1) 0 4px 6px -2px;
 
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
+  /* halos légèrement plus intenses en mode sombre */
+  --blob-accent: rgba(139, 92, 246, 0.12);
+  --blob-blue: rgba(59, 130, 246, 0.1);
+  --blob-top: rgba(139, 92, 246, 0.04);
+
+  color-scheme: dark;
+}
+
+:root.dark #social .button-icon {
+  filter: invert(1) brightness(2);
 }
 
 body {
   margin: 0;
   background-color: var(--bg);
+  color: var(--text);
+  
+  /* création du fond dynamique global */
+  background-image:
+    radial-gradient(circle at top right, var(--blob-accent) 0%, transparent 500px),
+    radial-gradient(circle at 10% 250px, var(--blob-blue) 0%, transparent 450px),
+    linear-gradient(to bottom, var(--blob-top) 0%, transparent 400px);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 #root {
@@ -76,6 +87,7 @@ h3 {
   font-family: var(--heading);
   font-weight: 600;
   color: var(--text-h);
+  transition: color 0.3s ease;
 }
 
 h1 {
@@ -108,11 +120,9 @@ code {
   font-size: 14px;
   padding: 3px 6px;
   background: var(--code-bg);
+  transition: background-color 0.3s ease;
 }
 
-/* ---------------------------------------------------
-   Scrollbar personnalisée
---------------------------------------------------- */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
