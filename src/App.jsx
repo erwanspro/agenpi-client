@@ -9,6 +9,9 @@ import DashboardLayout from './components/layout/DashboardLayout';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ClientsManage from './pages/admin/ClientsManage';
+import ProjectsManage from './pages/admin/ProjectsManage';
+import TasksBoard from './pages/admin/TasksBoard';
+import Kanban from './pages/dev/Kanban';
 
 function App() {
   return (
@@ -33,7 +36,7 @@ function App() {
             <Route path="/users_manage" element={<Home />} />
             <Route path="/absence_manage" element={<Home />} />
             <Route path="/my_absence" element={<Home />} />
-            <Route path="/task" element={<Home />} />
+            <Route path="/kanban" element={<Kanban />} />
 
             {/*ROUTES ADMIN SECURISER */}
 
@@ -49,6 +52,17 @@ function App() {
               </AdminRoute>
             } />
 
+            <Route path="/project_manage" element={
+              <AdminRoute>
+                <ProjectsManage />
+              </AdminRoute>
+            } />
+
+            <Route path="/taskboard" element={
+              <AdminRoute>
+                <TasksBoard />
+              </AdminRoute>
+            } />
         </Route>
 
         {/* ROUTE 404 */}
