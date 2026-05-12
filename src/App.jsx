@@ -9,6 +9,7 @@ import DashboardLayout from './components/layout/DashboardLayout';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ClientsManage from './pages/admin/ClientsManage';
+import ProjectsManage from './pages/admin/ProjectsManage';
 
 function App() {
   return (
@@ -49,6 +50,11 @@ function App() {
               </AdminRoute>
             } />
 
+            <Route path="/project_manage" element={
+              <AdminRoute>
+                <ProjectsManage />
+              </AdminRoute>
+            } />
         </Route>
 
         {/* ROUTE 404 */}
