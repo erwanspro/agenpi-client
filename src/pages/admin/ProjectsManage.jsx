@@ -1,40 +1,43 @@
 import { useState, useEffect } from 'react';
 import api from '../../api/axios';
 import { toast } from 'react-toastify';
+import MultiSelect from '../../components/MultiSelect';
 
 const ProjectsManage = () => {
     const [projects, setProjects] = useState([]);
     const [clients, setClients] = useState([]);
+    const [users, setUsers] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
     
-    // modales
     const [showConfirmModal, setShowConfirmModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     
-    // états form
     const [isEditing, setIsEditing] = useState(false);
     const [currentProjectId, setCurrentProjectId] = useState(null);
     const [projectToDelete, setProjectToDelete] = useState(null);
 
     const [formData, setFormData] = useState({
         name: '',
-        client: '', // Stockera l'ID du client pour le menu déroulant
+        client: '',
         status: 'En attente',
         description: '',
         startDate: '',
-        endDate: ''
+        endDate: '',
+        users: [] // ajout du tableau des utilisateurs
     });
 
     const fetchData = async () => {
         try {
-            // On charge les projets ET les clients en parallèle
-            const [projectsRes, clientsRes] = await Promise.all([
+            // on charge tout en parallèle
+            const [projectsRes, clientsRes, usersRes] = await Promise.all([
                 api.get('/projects'),
-                api.get('/clients')
+                api.get('/clients'),
+                api.get('/users')
             ]);
             setProjects(projectsRes.data.member || []);
             setClients(clientsRes.data.member || []);
+            setUsers(usersRes.data.member || []);
         } catch (error) {
             toast.error("Erreur lors de la récupération des données.");
         } finally {
@@ -55,15 +58,19 @@ const ProjectsManage = () => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
+    // fonction spécifique pour notre multiselect
+    const handleUsersChange = (selectedUsers) => {
+        setFormData({ ...formData, users: selectedUsers });
+    };
+
     const resetForm = () => {
         setIsEditing(false);
         setCurrentProjectId(null);
         setFormData({ 
-            name: '', client: '', status: 'En attente', description: '', startDate: '', endDate: '' 
+            name: '', client: '', status: 'En attente', description: '', startDate: '', endDate: '', users: [] 
         });
     };
 
-    // Formate la date renvoyée par l'API (ex: 2026-05-12T00:00:00) au format YYYY-MM-DD pour l'input HTML
     const formatDateForInput = (dateString) => {
         if (!dateString) return '';
         return new Date(dateString).toISOString().split('T')[0];
@@ -78,7 +85,9 @@ const ProjectsManage = () => {
             status: project.status,
             description: project.description || '',
             startDate: formatDateForInput(project.startDate),
-            endDate: formatDateForInput(project.endDate)
+            endDate: formatDateForInput(project.endDate),
+            // on récupère les iris des utilisateurs déjà assignés
+            users: project.users ? project.users.map(u => typeof u === 'string' ? u : u['@id']) : []
         });
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
@@ -102,16 +111,14 @@ const ProjectsManage = () => {
     const confirmSubmit = async () => {
         setShowConfirmModal(false);
 
-        // Préparation des données pour API Platform
         const dataToSend = {
             name: formData.name,
             status: formData.status,
-            client: `/api/clients/${formData.client}`, // On transforme l'ID en IRI
-            // On convertit la date HTML (YYYY-MM-DD) en format ISO 8601
-            startDate: new Date(formData.startDate).toISOString()
+            client: `/api/clients/${formData.client}`,
+            startDate: new Date(formData.startDate).toISOString(),
+            users: formData.users // le backend api platform accepte directement ce tableau d'iris
         };
         
-        // Gestion des champs optionnels
         if (!formData.description || formData.description.trim() === "") {
             dataToSend.description = null;
         } else {
@@ -153,14 +160,13 @@ const ProjectsManage = () => {
         }
     };
 
-    // Helpers UI
     const getStatusBadge = (status) => {
         switch(status) {
             case 'En cours':
                 return <span className="px-2.5 py-1 rounded-lg text-xs font-bold bg-blue-500/10 text-blue-500 border border-blue-500/20">En cours</span>;
             case 'Terminé':
                 return <span className="px-2.5 py-1 rounded-lg text-xs font-bold bg-green-500/10 text-green-500 border border-green-500/20">Terminé</span>;
-            default: // En attente
+            default:
                 return <span className="px-2.5 py-1 rounded-lg text-xs font-bold bg-(--code-bg) text-(--text) border border-(--border)">En attente</span>;
         }
     };
@@ -170,10 +176,15 @@ const ProjectsManage = () => {
         return new Date(dateString).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' });
     };
 
-    // KPIs
     const totalProjects = projects.length;
     const activeProjects = projects.filter(p => p.status === 'En cours').length;
     const completedProjects = projects.filter(p => p.status === 'Terminé').length;
+
+    // préparation des options pour le composant multiselect
+    const userOptions = users.map(user => ({
+        label: `${user.firstName} ${user.lastName}`,
+        value: user['@id'] || `/api/users/${user.id}`
+    }));
 
     return (
         <div className="space-y-6 relative z-0">
@@ -185,7 +196,6 @@ const ProjectsManage = () => {
                 </div>
             </div>
 
-            {/* KPIs */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-6">
                 <div className="bg-(--bg-secondary)/80 backdrop-blur-md p-5 rounded-2xl border border-(--border) shadow-sm flex items-center gap-4 hover:-translate-y-1 transition-transform duration-300">
                     <div className="p-3 bg-(--accent)/10 text-(--accent) rounded-xl">
@@ -226,7 +236,6 @@ const ProjectsManage = () => {
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 relative">
                 
-                {/* --- COLONNE GAUCHE : LISTE DES PROJETS --- */}
                 <div className="lg:col-span-2 bg-(--bg-secondary)/90 backdrop-blur-xl rounded-2xl shadow-sm border border-(--border) overflow-hidden flex flex-col h-fit">
                     
                     <div className="px-6 py-4 border-b border-(--border) bg-(--code-bg)/50 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
@@ -269,6 +278,7 @@ const ProjectsManage = () => {
                                 <thead className="sticky top-0 z-10 bg-(--bg-secondary) shadow-sm backdrop-blur-md">
                                     <tr className="border-b border-(--border) text-xs uppercase tracking-wider text-(--text)">
                                         <th className="px-6 py-4 font-semibold">Projet & Client</th>
+                                        <th className="px-6 py-4 font-semibold">Équipe</th>
                                         <th className="px-6 py-4 font-semibold">Statut</th>
                                         <th className="px-6 py-4 font-semibold">Échéance</th>
                                         <th className="px-6 py-4 font-semibold text-right">Actions</th>
@@ -277,6 +287,8 @@ const ProjectsManage = () => {
                                 <tbody className="divide-y divide-(--border)">
                                     {filteredProjects.map((project) => {
                                         const isRowEditing = isEditing && currentProjectId === project.id;
+                                        // si le backend envoie les utilisateurs, on affiche le nombre
+                                        const teamCount = project.users ? project.users.length : 0;
                                         return (
                                         <tr key={project.id} className={`group transition-all duration-200 ${isRowEditing ? 'bg-blue-500/5 border-l-4 border-l-blue-500' : 'hover:bg-(--code-bg) border-l-4 border-l-transparent'}`}>
                                             <td className="px-6 py-4">
@@ -287,6 +299,12 @@ const ProjectsManage = () => {
                                                     <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
                                                     {project.client?.companyName || 'Client inconnu'}
                                                 </div>
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium bg-(--code-bg) text-(--text) border border-(--border)">
+                                                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+                                                    {teamCount} membre{teamCount !== 1 ? 's' : ''}
+                                                </span>
                                             </td>
                                             <td className="px-6 py-4">
                                                 {getStatusBadge(project.status)}
@@ -313,7 +331,6 @@ const ProjectsManage = () => {
                     </div>
                 </div>
 
-                {/* --- COLONNE DROITE : FORMULAIRE --- */}
                 <div className={`bg-(--bg-secondary)/90 backdrop-blur-xl rounded-2xl shadow-lg border ${isEditing ? 'border-blue-500/50 shadow-blue-500/20' : 'border-(--border)'} transition-all duration-300 h-fit sticky top-24 relative overflow-hidden`}>
                     <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, currentColor 1px, transparent 0)', backgroundSize: '16px 16px' }}></div>
 
@@ -356,6 +373,15 @@ const ProjectsManage = () => {
                                 </select>
                             </div>
 
+                            {/* LE NOUVEAU MULTISELECT */}
+                            <MultiSelect 
+                                label="Équipe assignée"
+                                placeholder="Ajouter des membres..."
+                                options={userOptions}
+                                selected={formData.users}
+                                onChange={handleUsersChange}
+                            />
+
                             <div className="space-y-1.5">
                                 <label className="text-xs font-semibold text-(--text) uppercase tracking-wide">Statut</label>
                                 <select 
@@ -395,7 +421,7 @@ const ProjectsManage = () => {
                 </div>
             </div>
 
-            {/* Modales */}
+            {/* Modales identiques... */}
             {showConfirmModal && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm transition-opacity duration-300">
                     <div className="bg-(--bg-secondary) rounded-2xl p-6 w-full max-w-sm shadow-2xl border border-(--border) transform animate-in fade-in zoom-in-95 duration-200">
