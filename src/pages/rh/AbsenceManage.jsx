@@ -7,6 +7,9 @@ const AbsenceManage = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
     const [activeTab, setActiveTab] = useState('PENDING');
+    
+    // Nouvel état pour gérer le tri (par défaut : trié par date la plus récente)
+    const [sortConfig, setSortConfig] = useState({ key: 'startDate', direction: 'desc' });
 
     const fetchAbsences = async () => {
         try {
@@ -60,6 +63,16 @@ const AbsenceManage = () => {
         }
     };
 
+    // Gestion du clic sur les en-têtes de colonnes
+    const handleSort = (key) => {
+        let direction = 'asc';
+        if (sortConfig.key === key && sortConfig.direction === 'asc') {
+            direction = 'desc';
+        }
+        setSortConfig({ key, direction });
+    };
+
+    // 1. On filtre par recherche
     const searchFiltered = absences.filter(abs => {
         const search = searchTerm.toLowerCase();
         const userName = `${abs.user?.firstName} ${abs.user?.lastName}`.toLowerCase();
@@ -68,14 +81,37 @@ const AbsenceManage = () => {
         return userName.includes(search) || serviceName.includes(search) || reasonName.includes(search);
     });
 
+    // 2. On filtre par onglet (En attente / Historique)
     const displayedAbsences = searchFiltered.filter(abs => {
         const currentStatus = abs.status || 'PENDING';
         if (activeTab === 'PENDING') return currentStatus === 'PENDING';
         return currentStatus === 'APPROVED' || currentStatus === 'REJECTED';
     });
 
+    // 3. On applique le tri
+    const sortedAbsences = [...displayedAbsences].sort((a, b) => {
+        if (sortConfig.key === 'startDate') {
+            const dateA = new Date(a.startDate).getTime();
+            const dateB = new Date(b.startDate).getTime();
+            return sortConfig.direction === 'asc' ? dateA - dateB : dateB - dateA;
+        }
+        if (sortConfig.key === 'status') {
+            const statusA = a.status || 'PENDING';
+            const statusB = b.status || 'PENDING';
+            if (statusA < statusB) return sortConfig.direction === 'asc' ? -1 : 1;
+            if (statusA > statusB) return sortConfig.direction === 'asc' ? 1 : -1;
+            return 0;
+        }
+        return 0;
+    });
+
     const pendingCount = absences.filter(a => (a.status || 'PENDING') === 'PENDING').length;
-    const historyCount = absences.filter(a => (a.status || 'PENDING') !== 'PENDING').length;
+
+    // Composant utilitaire pour afficher la flèche de tri
+    const SortIcon = ({ columnKey }) => {
+        if (sortConfig.key !== columnKey) return <span className="opacity-0 group-hover:opacity-30 w-4 h-4 inline-block">↕</span>;
+        return <span className="text-(--accent) font-bold ml-1">{sortConfig.direction === 'asc' ? '↑' : '↓'}</span>;
+    };
 
     return (
         <div className="space-y-6 relative z-0">
@@ -157,7 +193,7 @@ const AbsenceManage = () => {
                                 </div>
                             ))}
                         </div>
-                    ) : displayedAbsences.length === 0 ? (
+                    ) : sortedAbsences.length === 0 ? (
                         <div className="p-16 flex flex-col items-center justify-center text-center">
                             <div className="w-16 h-16 bg-(--code-bg) rounded-full flex items-center justify-center mb-4 text-(--text)">
                                 <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" /></svg>
@@ -170,13 +206,25 @@ const AbsenceManage = () => {
                                 <tr className="border-b border-(--border) text-xs uppercase tracking-wider text-(--text)">
                                     <th className="px-6 py-4 font-semibold">Employé</th>
                                     <th className="px-6 py-4 font-semibold">Motif</th>
-                                    <th className="px-6 py-4 font-semibold">Période</th>
-                                    <th className="px-6 py-4 font-semibold">Statut</th>
+                                    <th 
+                                        className="px-6 py-4 font-semibold cursor-pointer hover:text-(--text-h) transition-colors group select-none"
+                                        onClick={() => handleSort('startDate')}
+                                        title="Trier par date"
+                                    >
+                                        Période <SortIcon columnKey="startDate" />
+                                    </th>
+                                    <th 
+                                        className="px-6 py-4 font-semibold cursor-pointer hover:text-(--text-h) transition-colors group select-none"
+                                        onClick={() => handleSort('status')}
+                                        title="Trier par statut"
+                                    >
+                                        Statut <SortIcon columnKey="status" />
+                                    </th>
                                     <th className="px-6 py-4 font-semibold text-right">Actions</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-(--border)">
-                                {displayedAbsences.map((absence) => {
+                                {sortedAbsences.map((absence) => {
                                     const days = calculateDays(absence.startDate, absence.endDate);
                                     const initials = absence.user ? `${absence.user.firstName?.charAt(0)}${absence.user.lastName?.charAt(0)}` : '?';
                                     
