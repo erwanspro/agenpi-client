@@ -15,6 +15,7 @@ import Kanban from './pages/dev/Kanban';
 import AbsenceManage from './pages/rh/AbsenceManage';
 import MyAbsence from './pages/dev/MyAbsences';
 import UsersManage from './pages/rh/UsersManage';
+import Messenger from './pages/Messenger';
 
 function App() {
   return (
@@ -40,9 +41,9 @@ function App() {
             <Route path="/absence_manage" element={<AbsenceManage />} />
             <Route path="/my_absence" element={<MyAbsence />} />
             <Route path="/kanban" element={<Kanban />} />
+            <Route path="/messages" element={<Messenger />} />
 
             {/*ROUTES ADMIN SECURISER */}
-
             <Route path="/clients_manage" element={
               <AdminRoute>
                 <ClientsManage />
