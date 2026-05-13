@@ -14,6 +14,7 @@ import TasksBoard from './pages/admin/TasksBoard';
 import Kanban from './pages/dev/Kanban';
 import AbsenceManage from './pages/rh/AbsenceManage';
 import MyAbsence from './pages/dev/MyAbsences';
+import UsersManage from './pages/rh/UsersManage';
 
 function App() {
   return (
@@ -35,7 +36,7 @@ function App() {
             
             <Route path="/home" element={<Home />} />
             
-            <Route path="/users_manage" element={<Home />} />
+            <Route path="/users_manage" element={<UsersManage />} />
             <Route path="/absence_manage" element={<AbsenceManage />} />
             <Route path="/my_absence" element={<MyAbsence />} />
             <Route path="/kanban" element={<Kanban />} />
